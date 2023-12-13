@@ -1,10 +1,12 @@
 # Shared Memory Cpp to Python  
 
 ## Usage 
-1. """ 
+1. 
+""" 
 make 
 """ 
-2. """ 
+2. 
+""" 
 ./run 
 """ 
 
