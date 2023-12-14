@@ -1,21 +1,18 @@
 // do - 2023.12.13
 // The test code for data sharing between C++ process and Python process by using shared memory
 
-
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <string> 
-#include <unistd.h>
-#include <string.h>
-#include "SharedMemoryManager.hpp"
-
+#include "include/SharedMemoryManager.hpp"
+#include "include/mesh.pb.h"
 
 #define VERTEX_KEY 100
 #define TRIANGLE_KEY 101
 
-
 using namespace std;
+
+vector<float3> vertices;
+vector<int3> triangles;
+
+string sample_file_path = "/home/do/Desktop/do_code/SharedMemoryCppToPython/mesh_data_all.txt";
 
 void GenSharedMemory(key_t key, size_t size)
 {
@@ -48,20 +45,72 @@ void testFunc()
   exit(0);
 }
 
+void ReadSample(){
+  FILE* fp = fopen(sample_file_path.c_str(), "r");
+  if (fp == NULL)
+  {
+    printf("Error : Failed to open file\n");
+    exit(1);
+  }
+  // read line by line and chk v and f and store them
+  char line[256];
+  while (fgets(line, sizeof(line), fp))
+  {
+    if (line[0] == 'v')
+    {
+      float3 vertex;
+      sscanf(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
+      vertices.push_back(vertex);
+    }
+    else if (line[0] == 'f')
+    {
+      int3 triangle;
+      sscanf(line, "f %d %d %d", &triangle.x, &triangle.y, &triangle.z);
+      triangles.push_back(triangle);
+    }
+  }
+}
+
+
 
 int main(int argc,const char** argv)
 {
   // Add the Data reading code here (temporarily, it will not used because this will be used as module)
+  ReadSample();
 
+  Mesh mesh;
+  mesh.set_class_info("all");
+  for (int i = 0; i < vertices.size(); i++)
+  {
+    Vertex vertex;
+    vertex.add_position(vertices[i].x);
+    vertex.add_position(vertices[i].y);
+    vertex.add_position(vertices[i].z);
+    mesh.add_vertices()->CopyFrom(vertex);
+    
+    Triangle triangle;
+    triangle.add_vertex_indices(triangles[i].x);
+    triangle.add_vertex_indices(triangles[i].y);
+    triangle.add_vertex_indices(triangles[i].z);
+    mesh.add_triangles()->CopyFrom(triangle);
+
+
+  }
+
+  string serialized_mesh;
+  mesh.SerializeToString(&serialized_mesh);
+  SharedMemoryWriter<char> shm_mesh(777, serialized_mesh.size());
 
   // testFunc();
-  size_t num_vertex = 256;
-  size_t num_triangle = 512;
-  SharedMemoryWriter<float> shm_vertex(VERTEX_KEY, sizeof(float) * 3 * num_vertex);
-  SharedMemoryWriter<int> shm_triangle(TRIANGLE_KEY, sizeof(int) * 3 * num_triangle);
+  size_t num_vertex = vertices.size();
+  size_t num_triangle = triangles.size();
+  // SharedMemoryWriter<vector<float3>> shm_vertex(VERTEX_KEY, sizeof(float) * 3 * num_vertex);
+  // SharedMemoryWriter<vector<int3>> shm_triangle(TRIANGLE_KEY, sizeof(int) * 3 * num_triangle);
+  
 
   // Add the Data allocation code here
 
+  printf(serialized_mesh.c_str());
 
 
   return 0;

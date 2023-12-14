@@ -9,17 +9,21 @@ if __name__ == "__main__":
     
     # Create shared memory object
     # if shm exist, there is no error. But if shm is not exist, error occurs.
-    shm = sysv_ipc.SharedMemory(777)
+    shm_vertex = sysv_ipc.SharedMemory(100)
+    shm_triangle = sysv_ipc.SharedMemory(101)
     
     # Read value from shared memory
-    value = shm.read()
-    print(type(value))
-    print(value)
+    # value = shm.read()
+    # print(type(value))
+    # print(value)
     
 
-    data = struct.unpack('f' * (len(value) // 4), value)
-    print(data)
+    # data = struct.unpack('f' * (len(value) // 4), value)
+    # print(data)
 
     # Delete shared memory object
-    shm.detach()
-    shm.remove()
+    shm_vertex.detach()
+    shm_vertex.remove()
+
+    shm_triangle.detach()
+    shm_triangle.remove()

@@ -1,0 +1,3 @@
+/home/do/Desktop/do_code/SharedMemoryCppToPython/CMakeFiles/rebuild_cache.dir
+/home/do/Desktop/do_code/SharedMemoryCppToPython/CMakeFiles/edit_cache.dir
+/home/do/Desktop/do_code/SharedMemoryCppToPython/CMakeFiles/run.dir
