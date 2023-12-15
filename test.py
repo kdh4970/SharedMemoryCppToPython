@@ -6,6 +6,7 @@ import struct
 import array
 import mesh_pb2
 
+KEY = 777
 
 def test():
     mesh = mesh_pb2.Mesh()
@@ -37,13 +38,18 @@ def test():
 
 if __name__ == "__main__":
     # test()
+
+
     # Create shared memory object
     # if shm exist, there is no error. But if shm is not exist, error occurs.
-    shm = sysv_ipc.SharedMemory(777)
+    shm = sysv_ipc.SharedMemory(KEY)
+    sem = sysv_ipc.Semaphore(KEY)
     # shm_triangle = sysv_ipc.SharedMemory(101)
     
     # Read value from shared memory
+    sem.acquire()
     value = shm.read()
+    sem.release()
     print("dtype : ", type(value))
     print("size : ", len(value))
     # print("value : ", value)
@@ -63,6 +69,7 @@ if __name__ == "__main__":
     # Delete shared memory object
     shm.detach()
     shm.remove()
+    sem.remove()
 
     # shm_triangle.detach()
     # shm_triangle.remove()

@@ -14,6 +14,8 @@ vector<int3> triangles;
 
 string sample_file_path = "/home/do/Desktop/do_code/SharedMemoryCppToPython/mesh_data_all.txt";
 
+bool test_wait = true;
+
 void GenSharedMemory(key_t key, size_t size)
 {
   int m_shmid = shmget(key, size, IPC_CREAT | 0666);
@@ -79,7 +81,7 @@ int main(int argc,const char** argv)
   printf("Reading Sample Data...");
   ReadSample();
   printf("Done\n");
-  printf("Number of Vertex : %d\nNumber of Triangle : %d\n", vertices.size(), triangles.size());
+  printf("The Number of Vertices : %ld\nThe Number of Triangles : %ld\n", vertices.size(), triangles.size());
 
   
   Mesh mesh;
@@ -106,6 +108,7 @@ int main(int argc,const char** argv)
 
   SharedMemoryWriter<char> shm_mesh(777, serialized_mesh.size());
 
+
   // testFunc();
   // size_t num_vertex = vertices.size();
   // size_t num_triangle = triangles.size();
@@ -115,8 +118,11 @@ int main(int argc,const char** argv)
   shm_mesh.WriteStrToSharedMemory(serialized_mesh);
   // Add the Data allocation code here
   printf("serialized data size : %ld\n", serialized_mesh.size());
-
-
+  
+  if(test_wait){
+    scanf("Press Enter to exit...");
+    exit(0);
+  }
 
   return 0;
 }

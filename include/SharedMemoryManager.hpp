@@ -37,28 +37,40 @@ public:
  */
   SharedMemoryWriter(key_t key, size_t size)
   {
-    m_key = key;
-    m_size = size;
-    m_shmid = shmget(m_key, m_size, IPC_CREAT | 0666);
-    if (m_shmid < 0)
+    _key = key;
+    _size = size;
+    // Create Shared Memory
+    _shmid = shmget(_key, _size, IPC_CREAT | 0666);
+    if (_shmid < 0)
     {
-      printf("Error : Failed to get shared memory id");
+      perror("Failed to get shared memory id");
       exit(1);
     }
-    m_ptr = shmat(m_shmid, NULL, 0);
-    if (m_ptr == (void *)-1)
-    {
-      printf("Error : Failed to attach shared memory id");
+    
+    // Create Semaphore
+    _semid = semget(_key, 1, IPC_CREAT | 0666);
+    semctl(_semid, 0, SETVAL, 1);
+    
+
+    // Attach Shared Memory
+    _shmptr = shmat(_shmid, NULL, 0);
+    if (_shmptr == (void *)-1) {
+      perror("Failed to attach shared memory id");
       exit(1);
     }
-    // strcpy(static_cast<char*>(m_ptr), "Hello");
-    printf("Successfully created shared memory.\n");
-    printf("key : %d\n", m_key);
-    printf("size : %ld\n", m_size);
-    printf("shmid : %d\n", m_shmid);
-    // printf("ptr : %p\n", m_ptr);
+    printf("Shared memory and Semaphore created.\n");
   }
 
+  ~SharedMemoryWriter()
+  {
+    // Detach Shared Memory
+    shmdt(_shmptr);
+    // Delete Shared Memory
+    shmctl(_shmid, IPC_RMID, NULL);
+    // Delete Semaphore
+    semctl(_semid, 0, IPC_RMID);
+  }
+  
   /**
    * @brief Copy the data to shared memory
    * 
@@ -72,16 +84,36 @@ public:
 
   void WriteStrToSharedMemory(std::string &Serialized_data)
   {
-    memcpy(m_ptr, Serialized_data.data(), Serialized_data.size());
-    // strcpy(static_cast<std::string*>(m_ptr), Serialized_data.c_str());
+    // Lock Semaphore
+    _sb = {0, -1, 0};
+    if (semop(_semid, &_sb, 1) == -1)
+    {
+      perror("Failed to lock semaphore");
+      exit(1);
+    }
+
+
+    printf("Transfer data to shared memory.\n");
+    // Data Copy
+    memcpy(_shmptr, Serialized_data.data(), Serialized_data.size());
+
+    // Unlock Semaphore
+    _sb.sem_op = 1;
+    if(semop(_semid, &_sb, 1))
+    {
+      perror("Failed to unlock semaphore");
+      exit(1);
+    }
+    
   }
 
 
 private:
-  key_t m_key;
-  size_t m_size;
-  int m_shmid;
-  void* m_ptr;
+  struct sembuf _sb;
+  key_t _key;
+  size_t _size;
+  int _shmid, _semid;
+  void* _shmptr;
 };
 
 
