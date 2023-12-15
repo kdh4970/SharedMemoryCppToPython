@@ -1,6 +1,9 @@
 # Shared Memory Cpp to Python  
 
 ## Dependencies  
+System V IPC  
+> Python : `pip install sysv_ipc`  
+
 Google Protocol Buffer C++ and Python Extension  
 > C++ : Build from Ofiicial github repository source.  
 > Python : `pip install protobuf`  
