@@ -3,7 +3,7 @@
 ## Dependencies  
 Google Protocol Buffer C++ and Python Extension  
 > C++ : Build from Ofiicial github repository source.  
-> Python : pip install protobuf  
+> Python : `pip install protobuf`  
 
 ## Usage  
 1. Change directory om terminal. `cmake .`  
