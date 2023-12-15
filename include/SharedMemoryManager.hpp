@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 #include <sys/types.h>
 #include <vector>
 #include <unistd.h>
@@ -69,9 +70,10 @@ public:
     
   }
 
-  void WriteStrToSharedMemory(std::string Serialized_data)
+  void WriteStrToSharedMemory(std::string &Serialized_data)
   {
-    strcpy(static_cast<char*>(m_ptr), Serialized_data.c_str());
+    memcpy(m_ptr, Serialized_data.data(), Serialized_data.size());
+    // strcpy(static_cast<std::string*>(m_ptr), Serialized_data.c_str());
   }
 
 

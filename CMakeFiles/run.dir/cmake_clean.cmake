@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/run.dir/include/mesh.pb.cc.o"
   "CMakeFiles/run.dir/mesh.pb.cc.o"
   "CMakeFiles/run.dir/test.cpp.o"
   "mesh.pb.cc"

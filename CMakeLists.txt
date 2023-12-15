@@ -12,7 +12,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
 list(APPEND SRCS
     include/SharedMemoryManager.hpp
-    include/mesh.pb.cc
+    # include/mesh.pb.cc
     test.cpp
 )
 set(PROTOS mesh.proto)
@@ -25,7 +25,7 @@ endif()
 
 add_executable(run ${SRCS} ${PROTOS})
 target_include_directories(run PUBLIC ${PROTOBUF_INCLUDE_DIRS})
-target_link_libraries(run ${PROTOBUF_LIBRARIES})
+# target_link_libraries(run ${PROTOBUF_LIBRARIES})
 target_link_libraries(run protobuf::libprotobuf)
 protobuf_generate(TARGET run)
 

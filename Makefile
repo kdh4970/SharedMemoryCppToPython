@@ -123,33 +123,6 @@ run/fast:
 	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/build
 .PHONY : run/fast
 
-include/mesh.pb.o: include/mesh.pb.cc.o
-
-.PHONY : include/mesh.pb.o
-
-# target to build an object file
-include/mesh.pb.cc.o:
-	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/include/mesh.pb.cc.o
-.PHONY : include/mesh.pb.cc.o
-
-include/mesh.pb.i: include/mesh.pb.cc.i
-
-.PHONY : include/mesh.pb.i
-
-# target to preprocess a source file
-include/mesh.pb.cc.i:
-	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/include/mesh.pb.cc.i
-.PHONY : include/mesh.pb.cc.i
-
-include/mesh.pb.s: include/mesh.pb.cc.s
-
-.PHONY : include/mesh.pb.s
-
-# target to generate assembly for a file
-include/mesh.pb.cc.s:
-	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/include/mesh.pb.cc.s
-.PHONY : include/mesh.pb.cc.s
-
 mesh.pb.o: mesh.pb.cc.o
 
 .PHONY : mesh.pb.o
@@ -213,9 +186,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... run"
-	@echo "... include/mesh.pb.o"
-	@echo "... include/mesh.pb.i"
-	@echo "... include/mesh.pb.s"
 	@echo "... mesh.pb.o"
 	@echo "... mesh.pb.i"
 	@echo "... mesh.pb.s"

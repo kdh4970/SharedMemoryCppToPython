@@ -76,8 +76,12 @@ void ReadSample(){
 int main(int argc,const char** argv)
 {
   // Add the Data reading code here (temporarily, it will not used because this will be used as module)
+  printf("Reading Sample Data...");
   ReadSample();
+  printf("Done\n");
+  printf("Number of Vertex : %d\nNumber of Triangle : %d\n", vertices.size(), triangles.size());
 
+  
   Mesh mesh;
   mesh.set_class_info("all");
   for (int i = 0; i < vertices.size(); i++)
@@ -87,30 +91,31 @@ int main(int argc,const char** argv)
     vertex.add_position(vertices[i].y);
     vertex.add_position(vertices[i].z);
     mesh.add_vertices()->CopyFrom(vertex);
-    
+  }
+  for (int i = 0; i < triangles.size(); i++)
+  {
     Triangle triangle;
     triangle.add_vertex_indices(triangles[i].x);
     triangle.add_vertex_indices(triangles[i].y);
     triangle.add_vertex_indices(triangles[i].z);
     mesh.add_triangles()->CopyFrom(triangle);
-
-
   }
 
   string serialized_mesh;
   mesh.SerializeToString(&serialized_mesh);
+
   SharedMemoryWriter<char> shm_mesh(777, serialized_mesh.size());
 
   // testFunc();
-  size_t num_vertex = vertices.size();
-  size_t num_triangle = triangles.size();
+  // size_t num_vertex = vertices.size();
+  // size_t num_triangle = triangles.size();
   // SharedMemoryWriter<vector<float3>> shm_vertex(VERTEX_KEY, sizeof(float) * 3 * num_vertex);
   // SharedMemoryWriter<vector<int3>> shm_triangle(TRIANGLE_KEY, sizeof(int) * 3 * num_triangle);
   
-
+  shm_mesh.WriteStrToSharedMemory(serialized_mesh);
   // Add the Data allocation code here
+  printf("serialized data size : %ld\n", serialized_mesh.size());
 
-  printf(serialized_mesh.c_str());
 
 
   return 0;
