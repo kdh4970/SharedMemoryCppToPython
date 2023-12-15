@@ -2,12 +2,13 @@
 
 ## Dependencies  
 Google Protocol Buffer C++ and Python Extension  
-> C++ : Build from Ofiicial github repository source.
-> Python : pip install protobuf
+> C++ : Build from Ofiicial github repository source.  
+> Python : pip install protobuf  
 
 ## Usage  
-1. `make` and `./run`  
-2. Execute test.py 
+1. Change directory om terminal. `cmake .`  
+2. `make` and `./run`  
+3. Execute test.py 
 
 ## Description  
 Implementation of inter-process communication by using System V based shared memory.  
