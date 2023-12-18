@@ -37,7 +37,7 @@ void GenSharedMemory(key_t key, size_t size)
 void testFunc()
 {
   size_t size = 256;
-  SharedMemoryWriter<float> man(777, size);
+  SharedMemoryManager<float> man(777, size);
   float data[size];
   for (int i = 0; i < size; i++)
   {
@@ -106,7 +106,8 @@ int main(int argc,const char** argv)
   string serialized_mesh;
   mesh.SerializeToString(&serialized_mesh);
 
-  SharedMemoryWriter<char> shm_mesh(777, serialized_mesh.size());
+  SharedMemoryManager<char> shm_mesh(777, serialized_mesh.size());
+
 
   shm_mesh.WriteStrToSharedMemory(serialized_mesh);
   // Add the Data allocation code here

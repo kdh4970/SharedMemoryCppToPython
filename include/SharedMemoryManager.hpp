@@ -26,7 +26,7 @@ struct int3
 };
 
 template <typename T>
-class SharedMemoryWriter
+class SharedMemoryManager
 {
 public:
   /**
@@ -35,7 +35,7 @@ public:
  * @param key  The key of shared memory
  * @param size  The size of shared memory
  */
-  SharedMemoryWriter(key_t key, size_t size)
+  SharedMemoryManager(key_t key, size_t size)
   {
     _key = key;
     _size = size;
@@ -61,7 +61,7 @@ public:
     printf("Shared memory and Semaphore created.\n");
   }
 
-  ~SharedMemoryWriter()
+  ~SharedMemoryManager()
   {
     // Detach Shared Memory
     shmdt(_shmptr);
