@@ -108,13 +108,6 @@ int main(int argc,const char** argv)
 
   SharedMemoryWriter<char> shm_mesh(777, serialized_mesh.size());
 
-
-  // testFunc();
-  // size_t num_vertex = vertices.size();
-  // size_t num_triangle = triangles.size();
-  // SharedMemoryWriter<vector<float3>> shm_vertex(VERTEX_KEY, sizeof(float) * 3 * num_vertex);
-  // SharedMemoryWriter<vector<int3>> shm_triangle(TRIANGLE_KEY, sizeof(int) * 3 * num_triangle);
-  
   shm_mesh.WriteStrToSharedMemory(serialized_mesh);
   // Add the Data allocation code here
   printf("serialized data size : %ld\n", serialized_mesh.size());

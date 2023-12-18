@@ -16,7 +16,7 @@ Google Protocol Buffer C++ and Python Extension
 > Python : `pip install protobuf`  
 
 ## Usage  
-1. Change directory om terminal. `cmake .`  
+1. Change directory in terminal. `cmake .`  
 2. `make` and `./run`  
 3. Execute test.py 
 
